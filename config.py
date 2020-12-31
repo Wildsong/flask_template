@@ -14,7 +14,7 @@ class Config(object):
     PORTAL_PASSWORD = os.environ.get('PORTAL_PASSWORD')
 
 # Where data live
-    TABLE_URL = os.environ.get('COVID_CASES_URL')
+    TABLE_URL = os.environ.get('TABLE_URL')
 
     pass
 
