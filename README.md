@@ -1,6 +1,8 @@
 # flask_template
 
 This is a template for a Python flask app.
+It's based on the "Advanced Application Structure"
+from "Mastering Flask Web Development", chapter 05.
 
 ## Set up
 
@@ -8,7 +10,6 @@ This is a template for a Python flask app.
 conda create --name=flask --file=requirements.txt
 conda activate flask
 ```
-
 ## Debug
 
 If the setup went well, you should now be able to open VSCode and hit F5

@@ -12,7 +12,7 @@
             "envFile": "${workspaceFolder}/.env",
             "env": {
                 "PYTHONDONTWRITEBYTECODE": "1",
-                "FLASK_APP": "app",
+                "FLASK_APP": "webapp",
                 "FLASK_ENV": "development",
                 "FLASK_DEBUG": "1"
             },

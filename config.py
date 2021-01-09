@@ -1,12 +1,12 @@
 import os
-
-# In PRODUCTION conda sets up the environment,
-# so look in ~/.conda/envs/covid/etc/conda/activate.d/env_vars.sh
-# to see how it is set up.
-
 class Config(object):
-    """ Read environment here to create configuration data. """
+    """ 
+Load configuration from environment. 
 
+In PRODUCTION conda sets up the environment,
+so look in ~/.conda/envs/covid/etc/conda/activate.d/env_vars.sh
+to see how it is set up. 
+    """
     SECRET_KEY = os.environ.get('SECRET_KEY') or "12345678"
  
     PORTAL_URL      = os.environ.get('PORTAL_URL')
