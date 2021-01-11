@@ -1,8 +1,13 @@
 # flask_template
 
-This is a template for a Python flask app.
-It's based on the "Advanced Application Structure"
-from "Mastering Flask Web Development", chapter 05.
+This is a simple template for a Python flask app.
+
+I was inspired by "Advanced Application Structure"
+from "Mastering Flask Web Development", but I backed off
+when the complexity started to go asymptotic on me.
+
+This is the simple template, maybe I will add an
+advanced one when I actually need it.
 
 ## Set up
 
