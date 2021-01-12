@@ -30,6 +30,7 @@ source files. If you don't want that then change FLASK_DEBUG to 0 and
 
 ## To-do
 
+* Make some generic forms
 * Enable the login code.
 * Perhaps add some notes on deployment.
 
