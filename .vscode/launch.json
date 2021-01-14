@@ -5,24 +5,26 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python: Flask App",
+            "name": "Python: Simple Flask App",
             "type": "python",
             "request": "launch",
-            "program": "main.py",
+            "program": "start_simple_app.py",
             "envFile": "${workspaceFolder}/.env",
             "env": {
                 "PYTHONDONTWRITEBYTECODE": "1",
-                "FLASK_APP": "webapp",
+                "PYTHONPATH": ".",
+                "FLASK_APP": "simple_app",
                 "FLASK_ENV": "development",
                 "FLASK_DEBUG": "1",
-		"FLASK_HOST": "0.0.0.0",
-		"FLASK_PORT": 5001
+        		"FLASK_HOST": "0.0.0.0",
+		        "FLASK_PORT": "5002"
             },
             "args": [
                 "run",
                 //"--cert=adhoc", // use this if you want to test HTTPS
-                "--no-debugger",
-                "--port=5001"
+                "--host=0.0.0.0", // let everyone see us, so that I can test remotely
+                "--no-debugger",  // I wonder what this does??
+                "--port=5002"
             ],
             "jinja": true,
             "console": "internalConsole",

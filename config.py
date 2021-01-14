@@ -20,8 +20,8 @@ to see how it is set up.
 # Where data live
     TABLE_URL = os.environ.get('TABLE_URL')
 
-    CELERY_BROKER_URL = os.environ.get('CELERY_BROKER_URL')
-    CELERY_RESULT_BACKEND = os.environ.get('CELERY_RESULT_BACKEND')
+    CELERY_BROKER = os.environ.get('CELERY_BROKER')
+    CELERY_BACKEND = os.environ.get('CELERY_BACKEND')
 
     pass
 

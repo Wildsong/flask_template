@@ -1,5 +1,5 @@
 import os
-from webapp import create_app
+from simple_app import create_app
 from version import version
 
 env = os.environ.get('WEBAPP_ENV', 'dev')
