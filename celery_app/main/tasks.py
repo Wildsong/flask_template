@@ -1,9 +1,8 @@
 
-import os
-from .extensions import celery
+from .. import celery
 
 @celery.task(name='add')
-def add(x,y):
+def Add(x,y):
     print("adding %d + %d" % (x,y))
     return x+y
 

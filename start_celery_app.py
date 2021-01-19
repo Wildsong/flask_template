@@ -1,9 +1,9 @@
 import os
-from celery_app import create_app
+from celery_app import make_app
 from version import version
 
 env = os.environ.get('WEBAPP_ENV', 'dev')
-app = create_app('config.%sConfig' % env.capitalize())
+app = make_app('config.%sConfig' % env.capitalize())
 
 if __name__ == '__main__':
     print("version:", version)

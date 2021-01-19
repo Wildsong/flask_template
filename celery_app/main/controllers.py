@@ -1,6 +1,10 @@
 from flask import Blueprint, render_template, redirect, flash
-from simple_app.main.forms import AdditionForm
-from tasks imprt
+from celery_app.main.forms import AdditionForm
+from .tasks import Add
+
+from flask import current_app
+from celery.result import AsyncResult
+
 main_blueprint = Blueprint(
     'main', 
     __name__,
@@ -30,11 +34,14 @@ def index():
             y = s2i(form.y.data)
 
             print("Here is where you need to queue the request.",x,y)
-            task = add.delay(x,y)
-#            async_result = AsyncResult(id=task.task_id, app=celery)
-#            add_result = async_result.get()
-
-            z = x+y
+            task = Add.delay(x,y)
+            
+            async_result = AsyncResult(id=task.task_id, app=current_app.celery)
+            # On the first pass, (after you submit data)
+            # this will return z=None
+            # Then wen some result comes back we'll execute this code again
+            # with z = the results from the Celery worker.
+            z = async_result.get()
 
         except Exception as e:
             print("Can't get values", e)
