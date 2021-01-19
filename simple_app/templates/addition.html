@@ -6,6 +6,10 @@
     <h1>Template test</h1>
 </div>
 
+This simple version just adds the two numbers in the routing function.
+The celery version will do the addition in a separate worker
+to demonstrate asynchronous processing.
+
 <h4>Give me two numbers to add.</h4>
 <form action="" method="post" novalidate>
     {{ form.hidden_tag() }}
