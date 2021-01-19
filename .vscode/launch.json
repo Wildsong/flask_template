@@ -9,11 +9,39 @@
             "type": "python",
             "request": "launch",
             "program": "start_simple_app.py",
-            "envFile": "${workspaceFolder}/.env",
             "env": {
                 "PYTHONDONTWRITEBYTECODE": "1",
-                "PYTHONPATH": ".",
                 "FLASK_APP": "simple_app",
+                "FLASK_ENV": "development",
+                "FLASK_DEBUG": "1",
+        		"FLASK_HOST": "0.0.0.0",
+		        "FLASK_PORT": "5002"
+            },
+            "args": [
+                "run",
+                //"--cert=adhoc", // use this if you want to test HTTPS
+                "--host=0.0.0.0", // let everyone see us, so that I can test remotely
+                "--no-debugger",  // I wonder what this does??
+                "--port=5002"
+            ],
+            "jinja": true,
+            "console": "internalConsole",
+            // Launch a browser and hand it our URL after flask starts.
+            "serverReadyAction": {
+                "pattern": "Running on (https?://[0-9]+[.][0-9]+[.][0-9]+[.][0-9]+:[0-9]+)",
+                "uriFormat": "%s",
+                "action":"openExternally"
+            }
+        },
+        {
+            "name": "Python: Celery Flask App",
+            "type": "python",
+            "request": "launch",
+            "program": "start_celery_app.py",
+            "envFile": "${workspaceFolder}/celery.env",
+            "env": {
+                "PYTHONDONTWRITEBYTECODE": "1",
+                "FLASK_APP": "celery_app",
                 "FLASK_ENV": "development",
                 "FLASK_DEBUG": "1",
         		"FLASK_HOST": "0.0.0.0",
