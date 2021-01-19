@@ -8,4 +8,4 @@ flask-wtf>=0.14
 flask-debugtoolbar>=0.10.1
 jinja2>=2.11.2
 blinker>=1.4
-celery>=5.0
+celery>=5.0.2
