@@ -12,6 +12,7 @@ celery_app/ -- adds celery for async support
 conda create --name=flask --file=requirements.txt
 conda activate flask
 ```
+
 ## Debug
 
 Select which app you want to test in the debugger configurations and hit F5.
@@ -30,7 +31,21 @@ I am using the "factory" pattern, so there is a "create_app" function
 and it's called from start_simple_app.py. I don't need to use
 the factory pattern here but it's needed in the celery app.
 
+### Celery app
 
+The Celery app uses three components so in addition to the web app you also
+have to launch the celery worker and redis.
+
+To start Redis, (it runs in background):
+```bash
+docker run -d -p 6379:6379 redis:latest
+```
+
+To start in the same terminal you can run this:
+```bash
+cd celery_app
+source ../celery.env && celery -A app.tasks worker
+```
 
 ## To-do
 
