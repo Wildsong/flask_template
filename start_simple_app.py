@@ -1,10 +1,22 @@
+"""
+Start me with
+
+    FLASK_APP=start_simple_app flask run
+
+Test me with
+
+    FLASK_APP=start_simple_app flask test
+"""
 import os
-from simple_app import make_app
+from unittest.loader import TestLoader
+from app_simple import create_app
 from version import version
 
-env = os.environ.get('WEBAPP_ENV', 'dev')
-app = make_app('config.%sConfig' % env.capitalize())
+app = create_app(os.environ.get('FLASK_ENV', 'default'))
 
-if __name__ == '__main__':
-    print("version:", version)
-    app.run(host=os.environ.get('FLASK_HOST'), port=os.environ.get('FLASK_PORT'))
+@app.cli.command()
+def test():
+    import unittest
+    tests = unittest.TestLoader().discover('tests')
+    unittest.TextTestRunner(verbosity=2).run(tests)
+

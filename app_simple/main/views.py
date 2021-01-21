@@ -1,11 +1,6 @@
 from flask import Blueprint, render_template, redirect, flash
-from simple_app.main.forms import AdditionForm
-
-main_blueprint = Blueprint(
-    'main', 
-    __name__,
-    template_folder='../templates/main'
-)
+from . import main
+from .forms import AdditionForm
 
 def s2i(s):
     """ Convert a string to an integer even if it has + and , in it. """
@@ -18,7 +13,7 @@ def s2i(s):
         return int(float(s.replace(',', '')))
     return None
 
-@main_blueprint.route('/', methods=['GET', 'POST'])
+@main.route('/', methods=['GET', 'POST'])
 def index():
     z = None
     form = AdditionForm()
@@ -28,11 +23,6 @@ def index():
         try:
             x = s2i(form.x.data)
             y = s2i(form.y.data)
-
-#            print("Here is where you need to queue the request.",x,y)
-#           task = add.delay(x,y)
-#            async_result = AsyncResult(id=task.task_id, app=celery)
-#            add_result = async_result.get()
 
             z = x+y
 

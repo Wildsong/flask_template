@@ -4,9 +4,8 @@
     celery -A celery_runner.py worker --loglevel=info
 """
 import os
-from celery_app import make_app
-from celery_app.celery_factory import make_celery
+from app_celery import create_app
+from app_celery.celery_factory import make_celery
 
-env = os.environ.get('WEBAPP_ENV', 'dev')
-flask_app = make_app('config.%sConfig' % env.capitalize())
-celery = make_celery(flask_app)
+flask_app = create_app(os.environ.get('WEBAPP_ENV', 'default'))
+celery = create_celery(flask_app)

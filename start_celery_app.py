@@ -1,9 +1,18 @@
+"""
+Start me with
+
+    FLASK_APP=start_celery_app flask run
+
+"""
 import os
-from celery_app import make_app
+from app_celery import create_app
 from version import version
 
-env = os.environ.get('WEBAPP_ENV', 'dev')
-app = make_app('config.%sConfig' % env.capitalize())
+app = create_app(os.environ.get('FLASK_ENV', 'default'))
+
+#@app.shell_context_processor
+#def make_shell_context():
+#    return dict(db=db, User=User, Role=Role)    
 
 if __name__ == '__main__':
     print("version:", version)

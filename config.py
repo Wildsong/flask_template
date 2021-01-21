@@ -25,12 +25,27 @@ to see how it is set up.
 
     pass
 
+    @staticmethod
+    def init_app(app):
+        pass
+
+class DevConfig(Config):
+    DEBUG = True
+
+class TestConfig(Config):
+    TESTING = True
+    DEBUG = True
+
 class ProdConfig(Config):
     DEBUG = False
 
 
-class DevConfig(Config):
-    DEBUG = True
+config = {
+    'development': DevConfig,
+    'testing': TestConfig,
+    'production': ProdConfig,
+    'default': DevConfig
+}
 
 
 if __name__ == "__main__":

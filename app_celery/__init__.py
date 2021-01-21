@@ -1,8 +1,8 @@
-import logging
 from flask import Flask, render_template
 from .extensions import *
-from .celery_factory import make_celery
+from .celery_factory import create_celery
 
+import logging
 logging.basicConfig(format='%(asctime)s:%(levelname)s:%(name)s:%(message)s')
 logging.getLogger().setLevel(logging.DEBUG)
 log = logging.getLogger(__name__)
@@ -12,7 +12,7 @@ def page_not_found(error):
     return render_template('404.html'), 404
 
 
-def make_app(configuration):
+def create_app(configuration):
     """
     An flask application factory, as explained here:
     http://flask.pocoo.org/docs/patterns/appfactories/
@@ -26,7 +26,10 @@ def make_app(configuration):
     bootstrap.init_app(app)
     debug_toolbar.init_app(app)
 
-    app.celery = make_celery(app)
+    # I have not figured out a better way to make this visible from tasks.
+    global celery
+    celery = make_celery(app)
+    app.celery = celery
 
     # Load blueprints
     from .main import create_module as main_create_module

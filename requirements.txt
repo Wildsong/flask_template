@@ -9,3 +9,4 @@ flask-debugtoolbar>=0.10.1
 jinja2>=2.11.2
 blinker>=1.4
 celery>=5.0.2>=3.5.3
+dotenv=>0.15.0

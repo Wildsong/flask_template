@@ -6,12 +6,26 @@ simple_app/ -- uses blueprints
 
 celery_app/ -- adds celery for async support
 
+## Read this book
+
+If you do a lot of the code here will be familiar.
+https://learning.oreilly.com/library/view/flask-web-development
+
 ## Set up
+
+Create a conda environment with the requirements. This does not
+pin down versions, so it's not suitable for production. This is only
+a template. (Or rather "templates".)
 
 ```bash
 conda create --name=flask --file=requirements.txt
 conda activate flask
 ```
+
+### Testing
+
+The templates have unit testing templates too.
+See also https://docs.python.org/3.6/library/unittest.html
 
 ## Debug
 
@@ -43,8 +57,7 @@ docker run -d -p 6379:6379 redis:latest
 
 To start in the same terminal you can run this:
 ```bash
-cd celery_app
-source ../celery.env && celery -A app.tasks worker
+./start_celery_worker.sh
 ```
 
 ## To-do

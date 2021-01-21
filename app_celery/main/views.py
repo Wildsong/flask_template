@@ -1,15 +1,9 @@
 from flask import Blueprint, render_template, redirect, flash
-from celery_app.main.forms import AdditionForm
-from .tasks import Add
+from . import main
+from  .forms import AdditionForm
 
 from flask import current_app
 from celery.result import AsyncResult
-
-main_blueprint = Blueprint(
-    'main', 
-    __name__,
-    template_folder='../templates/main'
-)
 
 def s2i(s):
     """ Convert a string to an integer even if it has + and , in it. """
@@ -22,7 +16,7 @@ def s2i(s):
         return int(float(s.replace(',', '')))
     return None
 
-@main_blueprint.route('/', methods=['GET', 'POST'])
+@main.route('/', methods=['GET', 'POST'])
 def index():
     z = None
     form = AdditionForm()
@@ -33,7 +27,7 @@ def index():
             x = s2i(form.x.data)
             y = s2i(form.y.data)
 
-            print("Here is where you need to queue the request.",x,y)
+            print("Queue request:",x,y)
             task = Add.delay(x,y)
             
             async_result = AsyncResult(id=task.task_id, app=current_app.celery)
@@ -42,6 +36,7 @@ def index():
             # Then wen some result comes back we'll execute this code again
             # with z = the results from the Celery worker.
             z = async_result.get()
+            print("result =", z)
 
         except Exception as e:
             print("Can't get values", e)
