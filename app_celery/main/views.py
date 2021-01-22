@@ -3,6 +3,7 @@ from . import main
 from  .forms import AdditionForm
 
 from flask import current_app
+from .tasks import Add, Info
 from celery.result import AsyncResult
 
 def s2i(s):
@@ -44,5 +45,22 @@ def index():
             return redirect("/fail")      
         
     return render_template('addition.html', form=form, result=z)
+
+@main.route('/info')
+def info():
+    try:
+        print("Queue request:")
+        task = Info.delay()
+        
+        async_result = AsyncResult(id=task.task_id, app=current_app.celery)
+        info = async_result.get()
+        print("info =", info)
+
+    except Exception as e:
+        print("Can't get info", e)
+        error = e
+        return redirect("/fail")      
+        
+    return render_template('info.html', result=info)
 
 # That's all!

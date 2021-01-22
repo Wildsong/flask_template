@@ -2,10 +2,9 @@ from .. import celery
 
 @celery.task(name='add')
 def Add(x,y):
-    print("Add(%d + %d)" % (x,y))
-    return x+y
+    result = x + y
+    return result
 
 @celery.task(name='info')
-def Info(x,y):
-    print('Request: {0!r}'.format(self.request))
-    return None
+def Info():
+    return "Details of your worker should go here. Stats or something."

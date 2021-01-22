@@ -3,9 +3,6 @@ Start me with
 
     FLASK_APP=start_simple_app flask run
 
-Test me with
-
-    FLASK_APP=start_simple_app flask test
 """
 import os
 from unittest.loader import TestLoader

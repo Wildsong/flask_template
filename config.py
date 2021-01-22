@@ -50,10 +50,17 @@ config = {
 
 if __name__ == "__main__":
 
-    assert Config.PORTAL_URL
-    assert Config.PORTAL_USER
-    assert Config.PORTAL_PASSWORD
-    assert Config.TABLE_URL
+    config = config['testing']
+    assert config.SECRET_KEY
+
+    # These have to be defined in your environment
+    # for example in a .env file or launch.json
+    # or conda environment.
+    
+    assert config.PORTAL_URL
+    assert config.PORTAL_USER
+    assert config.PORTAL_PASSWORD
+    assert config.TABLE_URL
     pass
 
 # That's all!

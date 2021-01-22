@@ -24,15 +24,18 @@ conda activate flask
 
 ### Testing
 
+TODO: I have only just started adding unit tests so this is not working yet.
+
 The templates have unit testing templates too.
 See also https://docs.python.org/3.6/library/unittest.html
 
-## Debug
+## Running in debugger
 
 Select which app you want to test in the debugger configurations and hit F5.
 
-If the correct Flask app starts up, then
-VSCode should open a browser that's pointing at it.
+If the correct Flask app starts up, then (happy days),
+VSCode should offer to open a browser that's pointing at it.
+(This even works with remote access because VSCode forwards ports.)
 
 If you want to try running on HTTPS instead of HTTP then uncomment the
 line "--cert=adhoc" in launch.json.
@@ -40,10 +43,6 @@ line "--cert=adhoc" in launch.json.
 This version of launch.json attempts to do hot reload when you edit
 source files. If you don't want that then change FLASK_DEBUG to 0 and
 (optionally) add "--no-reload=true" under args.
-
-I am using the "factory" pattern, so there is a "create_app" function
-and it's called from start_simple_app.py. I don't need to use
-the factory pattern here but it's needed in the celery app.
 
 ### Celery app
 
@@ -55,14 +54,21 @@ To start Redis, (it runs in background):
 docker run -d -p 6379:6379 redis:latest
 ```
 
-To start in the same terminal you can run this:
+You can run both the app and the worker at the same time using F5
+if you select the "compound" entry called Celery App/Worker in launch.json 
+
+## Running in Docker
+
+This is a template but includes sample Docker files to run the Celery app.
+
 ```bash
-./start_celery_worker.sh
+docker-compose build
+docker-compose up -d
 ```
 
 ## To-do
 
 * Make some generic forms
 * Enable the login code.
-* Perhaps add some notes on deployment.
+* Perhaps add some notes on deployment, after I figure out how.
 

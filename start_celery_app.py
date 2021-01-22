@@ -5,15 +5,19 @@ Start me with
 
 """
 import os
+from unittest.loader import TestLoader
 from app_celery import create_app
 from version import version
 
 app = create_app(os.environ.get('FLASK_ENV', 'default'))
 
-#@app.shell_context_processor
+# You need this if you use authentication
+# #@app.shell_context_processor
 #def make_shell_context():
 #    return dict(db=db, User=User, Role=Role)    
 
-if __name__ == '__main__':
-    print("version:", version)
-    app.run(host=os.environ.get('FLASK_HOST'), port=os.environ.get('FLASK_PORT'))
+@app.cli.command()
+def test():
+    import unittest
+    tests = unittest.TestLoader().discover('tests')
+    unittest.TextTestRunner(verbosity=2).run(tests)
