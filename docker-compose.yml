@@ -1,0 +1,76 @@
+version: '3.7'
+
+# Starts three services,
+#
+# redis, a message queue
+# webapp, a web app implemented with flask
+# worker, a celery app that processes requests from flask app
+#
+
+networks:
+  flask_net:
+
+services:
+  redis:
+  # This image is based on Debian;
+  # there is an image based on Alpine but it uses an old Redis release.
+    image: redis:latest
+    deploy:
+      mode: global
+      restart_policy:
+        condition: on-failure
+        delay: 5s
+        window: 15s
+    networks:
+      flask_net:
+        aliases:
+          - redis
+    
+  webapp:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: wildsong/web:latest
+#    env_file: .env
+    environment:
+      - PYTHONPATH=/srv
+      - FLASK_APP=start_celery_app
+      # without these, flask app cannot find redis.
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    command: flask run
+    volumes:
+      - .:/srv
+    ports:
+      - "5002:5002"
+    user: app
+    networks:
+      flask_net:
+        aliases:
+          - webapp
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PYTHONPATH=/srv
+      # without these, celery tries to connect to RabbitMQ instead of REDIS.
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    command: celery --app=celery_worker worker --loglevel=info
+    volumes:
+      - .:/srv
+    user: app
+    networks:
+      flask_net:
+        aliases:
+          - worker
+
+#    healthcheck:
+#      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
+#      interval: 10s
+#      timeout: 10s
+#      retries: 3
+#      start_period: 30s
+
