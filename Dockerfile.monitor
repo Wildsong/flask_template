@@ -1,9 +1,15 @@
 FROM continuumio/miniconda3
+# Note that the miniconda image is based on Debian Buster
+
 LABEL maintainer="Brian Wilson <brian@wildsong.biz>"
 LABEL version="1.0"
 LABEL biz.wildsong.name="flask-template"
 
 ENV SERVER_BASE /srv
+
+# Life without ping is almost meaningless.
+RUN apt-get update && \
+    apt-get install -y iputils-ping
 
 # This will upgrade conda, so the fact that the base image is old does not matter
 #
@@ -16,7 +22,7 @@ RUN conda config --add channels conda-forge &&\
 
 
 # Install the packages that this project needs.
-COPY requirements.txt ./
+COPY flower_requirements.txt ./requirements.txt
 RUN conda install --file requirements.txt
 
 # Don't run as root

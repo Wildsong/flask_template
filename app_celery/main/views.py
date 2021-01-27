@@ -3,7 +3,7 @@ from . import main
 from  .forms import AdditionForm
 
 from flask import current_app
-from .tasks import Add, Info
+from .tasks import add, info, log
 from celery.result import AsyncResult
 
 def s2i(s):
@@ -29,7 +29,7 @@ def index():
             y = s2i(form.y.data)
 
             print("Queue request:",x,y)
-            task = Add.delay(x,y)
+            task = add.delay(x,y)
             
             async_result = AsyncResult(id=task.task_id, app=current_app.celery)
             # On the first pass, (after you submit data)
@@ -50,7 +50,7 @@ def index():
 def info():
     try:
         print("Queue request:")
-        task = Info.delay()
+        task = info.delay()
         
         async_result = AsyncResult(id=task.task_id, app=current_app.celery)
         info = async_result.get()

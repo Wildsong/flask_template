@@ -1,14 +1,10 @@
 version: '3.7'
 
-# Starts three services,
-#
-# redis, a message queue
-# webapp, a web app implemented with flask
-# worker, a celery app that processes requests from flask app
-#
-
-networks:
-  flask_net:
+# Starts these services:
+#   redis, a message queue
+#   webapp, a web app implemented with flask, see it on port 5002
+#   worker, a celery app that processes requests from flask app
+#   monitor, a celery app called 'flower' that monitors celery, see it on port 5555
 
 services:
   redis:
@@ -22,15 +18,15 @@ services:
         delay: 5s
         window: 15s
     networks:
-      flask_net:
+      default:
         aliases:
           - redis
     
   webapp:
     build:
       context: .
-      dockerfile: Dockerfile
-    image: wildsong/web:latest
+      dockerfile: Dockerfile.flask
+    image: wildsong/flask:latest
 #    env_file: .env
     environment:
       - PYTHONPATH=/srv
@@ -42,17 +38,15 @@ services:
     volumes:
       - .:/srv
     ports:
-      - "5002:5002"
+      - 5002:5002
     user: app
     networks:
-      flask_net:
+      default:
         aliases:
           - webapp
 
   worker:
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: wildsong/flask:latest
     environment:
       - PYTHONPATH=/srv
       # without these, celery tries to connect to RabbitMQ instead of REDIS.
@@ -63,9 +57,32 @@ services:
       - .:/srv
     user: app
     networks:
-      flask_net:
+      default:
         aliases:
           - worker
+
+  monitor:
+    image: wildsong/flower:latest
+    build:
+      context: .
+      dockerfile: Dockerfile.monitor
+    environment:
+      - PYTHONPATH=/srv
+      # without these, celery tries to connect to RabbitMQ instead of REDIS.
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    command: flower -A celery_worker
+    volumes:
+      - .:/srv
+    ports: 
+      - 5555:5555
+    user: app
+    networks:
+      default:
+        aliases:
+          - monitor
+
+
 
 #    healthcheck:
 #      test: ["CMD", "curl", "-f", "http://localhost:8080/"]

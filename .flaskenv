@@ -6,6 +6,6 @@ FLASK_RUN_PORT=5002
 # https://flask-wtf.readthedocs.io/en/stable/config.html?highlight=csrf#
 WTF_CSRF_TIME_LIMIT=None
 
-CELERY_BROKER=redis://localhost:6379/0
-CELERY_BACKEND=redis://localhost:6379/0
+CELERY_BROKER=redis://redis:6379/0
+CELERY_BACKEND=redis://redis:6379/0
 
