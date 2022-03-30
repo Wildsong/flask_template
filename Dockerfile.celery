@@ -1,0 +1,9 @@
+FROM wildsong/flask
+LABEL maintainer="Brian Wilson <brian@wildsong.biz>"
+LABEL version="1.0"
+LABEL biz.wildsong.name="flask-celery-template"
+
+# Install the packages that this project needs.
+COPY celery_requirements.txt .
+RUN conda install --file celery_requirements.txt
+

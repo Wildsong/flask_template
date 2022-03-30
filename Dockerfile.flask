@@ -1,29 +1,31 @@
-FROM continuumio/miniconda3
+# I got tired of the continuum conda image not working quite right
+# so I build my own now.
+# This basic Flask-in-Docker image is used in several other projects now.
+FROM debian:11
 LABEL maintainer="Brian Wilson <brian@wildsong.biz>"
 LABEL version="1.0"
-LABEL biz.wildsong.name="flask-template"
+LABEL biz.wildsong.name="arctic_webhooks"
 
 ENV SERVER_BASE /srv
 
-# Life without ping is almost meaningless.
-RUN apt-get update && \
-    apt-get install -y iputils-ping
+# Don't run as root
+ENV CONDA="/home/app/miniconda3"
+RUN adduser --disabled-password --gecos '' app
+WORKDIR /home/app
 
-# This will upgrade conda, so the fact that the base image is old does not matter
-#
-RUN conda update -n base -c defaults conda
-
-# Add some sources to conda, so we can load more packages if we want.
-RUN conda config --add channels conda-forge &&\
-    conda config --add channels hugo &&\
-    conda config --add channels Esri
-
+ENV INSTALLER Miniconda3-latest-Linux-x86_64.sh
+ADD https://repo.continuum.io/miniconda/${INSTALLER} .
+RUN chmod 755 ${INSTALLER}
+USER app
+RUN sh ./${INSTALLER} -b && \
+    rm ./${INSTALLER}
+ENV PATH=${CONDA}/bin/:${PATH}
 
 # Install the packages that this project needs.
-COPY requirements.txt .
-RUN conda install --file requirements.txt
+COPY basic_requirements.txt .
+RUN conda config --add channels conda-forge &&\
+    conda install -y --file basic_requirements.txt
 
-# Don't run as root
-RUN adduser --disabled-password --gecos '' app
-
-WORKDIR $SERVER_BASE
+EXPOSE 5123
+COPY hello.py .
+CMD ["python", "hello.py"]

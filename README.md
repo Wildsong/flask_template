@@ -9,7 +9,7 @@ celery_app/ -- adds celery for async support
 ## Read this book
 
 If you read it, then a lot of the code here will be familiar.
-https://learning.oreilly.com/library/view/flask-web-development
+[Flask Web Development](https://learning.oreilly.com/library/view/flask-web-development)
 
 ## Set up
 
@@ -22,13 +22,42 @@ conda create --name=flask --file=requirements.txt
 conda activate flask
 ```
 
+## Build the basic flask image
+
+This one is already built and uploaded to hub.docker.com,
+these instructions remind me how to push updates.
+
+```bash
+docker buildx build -t wildsong/flask -f Dockerfile.flask .
+docker tag wildsong/flask:latest hub.docker.com/wildsong/flask:latest
+docker push wildsong/flask:latest
+```
+
+You can test it, run this and open a browser on port 5123.
+
+```bash
+docker run -ti --name=test_flask --rm -p 5123:5123 wildsong/flask
+```
+
+## Build the celery flask image
+
+```bash
+docker buildx build -t wildsong/celery -f Dockerfile.celery .
+docker push wildsong/celery
+```
+
+Now you can test it, run this and open it on port 5123.
+
+```bash
+docker run -ti --name=test_flask --rm wildsong/flask
+```
 
 ### Testing
 
 TODO: I have only just started adding unit tests so this is not working yet.
 
 The templates have unit testing templates too.
-See also https://docs.python.org/3.6/library/unittest.html
+See also [Unittest](https://docs.python.org/3.6/library/unittest.html)
 
 #### Monitor and test Celery
 
@@ -63,6 +92,7 @@ The Celery app uses three components so in addition to the web app you also
 have to launch the celery worker and redis.
 
 To start Redis, (it runs in background):
+
 ```bash
 docker run -d -p 6379:6379 redis:latest
 ```
@@ -82,6 +112,7 @@ docker-compose up -d
 ## Kernel optimization
 
 These messages are disturbing me
+
 ```bash
 redis_1    | 1:C 26 Jan 2021 22:30:26.220 # Warning: no config file specified, using the default config. In order to specify a config file use redis-server /path/to/redis.conf
 redis_1    | 1:M 26 Jan 2021 22:30:26.251 * Running mode=standalone, port=6379.

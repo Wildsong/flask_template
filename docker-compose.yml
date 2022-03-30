@@ -21,12 +21,9 @@ services:
       default:
         aliases:
           - redis
-    
+  
   webapp:
-    build:
-      context: .
-      dockerfile: Dockerfile.flask
-    image: wildsong/flask:latest
+    image: wildsong/celery
 #    env_file: .env
     environment:
       - PYTHONPATH=/srv
@@ -46,7 +43,7 @@ services:
           - webapp
 
   worker:
-    image: wildsong/flask:latest
+    image: wildsong/celery
     environment:
       - PYTHONPATH=/srv
       # without these, celery tries to connect to RabbitMQ instead of REDIS.
@@ -62,7 +59,7 @@ services:
           - worker
 
   monitor:
-    image: wildsong/flower:latest
+    image: wildsong/celery
     build:
       context: .
       dockerfile: Dockerfile.monitor
@@ -81,13 +78,3 @@ services:
       default:
         aliases:
           - monitor
-
-
-
-#    healthcheck:
-#      test: ["CMD", "curl", "-f", "http://localhost:8080/"]
-#      interval: 10s
-#      timeout: 10s
-#      retries: 3
-#      start_period: 30s
-
