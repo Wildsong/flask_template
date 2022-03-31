@@ -33,11 +33,15 @@ docker tag wildsong/flask:latest hub.docker.com/wildsong/flask:latest
 docker push wildsong/flask:latest
 ```
 
-You can test it, run this and open a browser on port 5123.
+To test the "hello world" app, run this and open a browser on port 5123.
 
 ```bash
 docker run -ti --name=test_flask --rm -p 5123:5123 wildsong/flask
 ```
+
+## Build the simple flask app
+
+There's also a "simple" app here, I should either document it or delete it.
 
 ## Build the celery flask image
 
@@ -45,11 +49,10 @@ docker run -ti --name=test_flask --rm -p 5123:5123 wildsong/flask
 docker buildx build -t wildsong/celery -f Dockerfile.celery .
 docker push wildsong/celery
 ```
-
-Now you can test it, run this and open it on port 5123.
+ To test it, run this.
 
 ```bash
-docker run -ti --name=test_flask --rm wildsong/flask
+docker run -ti --name=test_flask --rm wildsong/celery
 ```
 
 ### Testing
