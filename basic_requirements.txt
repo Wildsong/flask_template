@@ -7,3 +7,4 @@ flask-bootstrap>=3.3
 flask-wtf>=0.14
 flask-debugtoolbar>=0.10.1
 jinja2>=2.11.2
+waitress>=2.1.1
