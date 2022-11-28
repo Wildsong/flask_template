@@ -6,6 +6,10 @@ simple_app/ -- uses blueprints
 
 celery_app/ -- adds celery for async support
 
+I don't like coding front ends in Python, so I have started a new project called
+[flask_api_template](https://github.com/Wildsong/flask_api_template) that only implements
+a REST API in Python/Flask and uses a JavaScript/Svelte front end for the user interface.
+
 ## Read this book
 
 If you read it, then a lot of the code here will be familiar.
